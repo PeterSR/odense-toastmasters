@@ -1,4 +1,26 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
 #board-embed {
     width: 100%;
     height: 15em;
+}
+
+#board {
+    width: 20em;
+    height: 10em;
+}
+
+#pathways {
+    width: 100%;
+    height: 50%;
+}
+
+#how-to-join {
+    font-size: small;
+}
+
+#qr-homepage {
+    margin-top: 1em;
+    aspect-ratio: 1 / 1;
+    width: 7em;
 }
