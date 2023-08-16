@@ -42,16 +42,30 @@
             <div class="card">
               <div class="card-body">
 
-                <div class="form-check form-switch mb-3">
-                  <input v-model="includeSignupFee" class="form-check-input" type="checkbox" id="include-signup-fee">
-                  <label class="form-check-label" for="include-signup-fee">Include first-time signup fee ({{signupFee}} DKK)</label>
+                <div class="mb-1">
+                  Price preset
+                </div>
+                <div class="btn-group mb-3" role="group" aria-label="Price preset">
+                  <input v-model="pricePreset" value="normal" type="radio" class="btn-check" name="price-preset" id="price-preset-1" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="price-preset-1">Normal</label>
+
+                  <input v-model="pricePreset" value="discount" type="radio" class="btn-check" name="price-preset" id="price-preset-2" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="price-preset-2">Unemployed / student discount</label>
+
+                  <input v-model="pricePreset" value="custom" type="radio" class="btn-check" name="price-preset" id="price-preset-3" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="price-preset-3">Custom</label>
                 </div>
 
                 <label for="membership-price" class="form-label">Membership price</label>
                 <div class="input-group mb-3">
-                  <input v-model="membershipPrice" type="text" class="form-control" id="membership-price" aria-label="Amount (to the nearest DKK)">
+                  <input v-model="membershipPrice" :readonly="pricePreset != 'custom'" type="text" class="form-control" id="membership-price" aria-label="Amount (to the nearest DKK)">
                   <span class="input-group-text">.00</span>
                   <span class="input-group-text">DKK</span>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                  <input v-model="includeSignupFee" class="form-check-input" type="checkbox" id="include-signup-fee">
+                  <label class="form-check-label" for="include-signup-fee">Include first-time signup fee ({{signupFee}} DKK)</label>
                 </div>
 
                 <div class="mb-3">
@@ -60,7 +74,7 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="term-end-date" class="form-label">Term end date</label>
+                  <label for="term-end-date" class="form-label">Renewal date</label>
                   <input v-model="termEndDateStr" type="date" class="form-control" id="term-end-date" placeholder="">
                 </div>
               </div>
@@ -142,15 +156,29 @@
       const maxWeeks = Math.round(computeWeeksBetweenDates(termEndings[0], termEndings[1]))
       const nextTermEnd = termEndings[0]
 
+      const NORMAL_PRICE = 600
+      const DISCOUNT_PRICE = 450
+      const SIGNUP_FEE = 150
+
       createApp({
         data() {
           return {
             includeSignupFee: true,
-            signupFee: 150,
-            membershipPrice: 600,
+            signupFee: SIGNUP_FEE,
+            pricePreset: "normal",
+            membershipPrice: NORMAL_PRICE,
             signupDate: new Date(),
             termEndDate: nextTermEnd,
           };
+        },
+        watch: {
+          pricePreset: function(value) {
+            if (value === "normal") {
+              this.membershipPrice = NORMAL_PRICE
+            } else if (value === "discount") {
+              this.membershipPrice = DISCOUNT_PRICE
+            }
+          },
         },
         computed: {
           signupDateStr: {
