@@ -56,7 +56,9 @@
                   <label class="btn btn-outline-primary" for="price-preset-3">Custom</label>
                 </div>
 
-                <label for="membership-price" class="form-label">Membership price</label>
+                <div>
+                  <label for="membership-price" class="form-label">Membership price</label>
+                </div>
                 <div class="input-group mb-3">
                   <input v-model="membershipPrice" :readonly="pricePreset != 'custom'" type="text" class="form-control" id="membership-price" aria-label="Amount (to the nearest DKK)">
                   <span class="input-group-text">.00</span>
